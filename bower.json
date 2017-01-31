@@ -1,0 +1,20 @@
+{
+  "name": "ticTac",
+  "homepage": "https://github.com/lukeschuyler/tic-tac-toe-killing-smoke-leprechauns",
+  "authors": [
+    "Luke Schuyler <lukeschuyler1@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7"
+  }
+}
