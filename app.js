@@ -18,6 +18,7 @@ let turnsRef = firebase.database().ref('games/' + currentGame + '/turns')
 const gamesRef = firebase.database().ref('games')
 let userRef = firebase.database().ref('games/' + currentGame + '/users')
 let i = 0
+let winner = ""
 
 
 
@@ -25,22 +26,72 @@ let i = 0
 functions
 *********************************/
 
+function winCheck(boardstate) {
+  // checks rows for O win
+  if (boardstate[0] && boardstate[1] && boardstate[2] === "O") {
+    winner = "O"
+    return true
+  } else if (boardstate[3] && boardstate[4] && boardstate[5] === "O") {
+    winner = "O"
+    return true
+  } else if (boardstate[6] && boardstate[7] && boardstate[8] === "O") {
+    winner = "O"
+    return true
+  // checks diags for O win
+  } else if (boardstate[0] && boardstate[4] && boardstate[8] === "O") {
+    winner = "O"
+    return true
+  } else if (boardstate[2] && boardstate[4] && boardstate[6] === "O") {
+    winner = "O"
+    return true
+  // checks cols for O win
+  } else if (boardstate[0] && boardstate[3] && boardstate[6] === "O") {
+    winner = "O"
+    return true
+  } else if (boardstate[1] && boardstate[4] && boardstate[7] === "O") {
+    winner = "O"
+    return true
+  } else if (boardstate[2] && boardstate[5] && boardstate[8] === "O") {
+    winner = "O"
+    return true
+  // checks rows for X win
+  } else  if (boardstate[0] && boardstate[1] && boardstate[2] === "X") {
+    winner = "X"
+    return true
+  } else if (boardstate[3] && boardstate[4] && boardstate[5] === "X") {
+    winner = "X"
+    return true
+  } else if (boardstate[6] && boardstate[7] && boardstate[8] === "X") {
+    winner = "X"
+    return true
+  // checks diags for X win
+  } else if (boardstate[0] && boardstate[4] && boardstate[8] === "X") {
+    winner = "X"
+    return true
+  } else if (boardstate[2] && boardstate[4] && boardstate[6] === "X") {
+    winner = "X"
+    return true
+  // checks cols for X win
+  } else if (boardstate[0] && boardstate[3] && boardstate[6] === "X") {
+    winner = "X"
+    return true
+  } else if (boardstate[1] && boardstate[4] && boardstate[7] === "X") {
+    winner = "X"
+    return true
+  } else if (boardstate[2] && boardstate[5] && boardstate[8] === "X") {
+    winner = "X"
+    return true
+  }
+}
 
 function onUpdate(snap) {
   const data = snap.val()
   const turns = data.turns
   console.log('turns', turns)
-  victory = boardCheck(turns)
-}
-
-function boardCheck(boardstate) {
-  if (boardstate.length < 5) {
-    return false
-  } else {
-
+  if(winCheck(turns)) {
+    alert(`${winner} Won!`)
   }
 }
-
 
 function makeMove() {
   // console.log(i)
