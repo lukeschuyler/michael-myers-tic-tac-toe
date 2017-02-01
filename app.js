@@ -8,6 +8,8 @@ const config = {
   firebase.initializeApp(config);
 
 let currentGame;
+let currentSeatOne;
+let currentSeatTwo;
 let turnsRef = firebase.database().ref('games/' + currentGame + '/turns')
 const gamesRef = firebase.database().ref('games')
 let userRef = firebase.database().ref('games/' + currentGame + '/users')
@@ -16,8 +18,10 @@ $('.square').click(makeMove)
 
 $('.new-game').click(newGame)
 
-	let i = 0
-	function makeMove() {
+let i = 0;
+
+function makeMove() {
+	if (this.innerHTML === '') {
 		let square = $(this).attr('id')
 		let turn;
 		if ((i % 2) === 0 || i === 0) {
@@ -32,6 +36,7 @@ $('.new-game').click(newGame)
 			return turnsRef.update({ [square] : 'O' })
 		}
 	}
+}
 
 
 function newGame() {
@@ -43,15 +48,20 @@ function newGame() {
 	})
 	gamesRef.push(newBoard)
 	  .then(data => currentGame = data.path.o[1])
-	  .then(() => turnsRef = firebase.database().ref('games/' + currentGame + '/turns'))
+	  .then(() => {
+	  	turnsRef = firebase.database().ref('games/' + currentGame + '/turns')
+	  	userRef = firebase.database().ref('games/' + currentGame + '/users')
+	})
 	i = 0;
 }
 
-$('.seat').click(function() {
+$('.seat').click(function(e) {
 	$(this).html('Seat Taken')
 	$(this).removeClass('btn-default')
 	$(this).addClass('btn-primary')
-	// Add current user info to firebase current game
+	if (document.querySelector('.seatOne').innerHTML === 'Seat Taken' && document.querySelector('.seatTwo').innerHTML === 'Seat Taken') {
+		userRef.update({twoplayers : true})
+	}
 })
 
 newGame();
