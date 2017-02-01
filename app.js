@@ -25,17 +25,21 @@ let i = 0
 functions
 *********************************/
 
+
 function onUpdate(snap) {
-  console.log('onUpdate')
-  console.log(snap)
   const data = snap.val()
-  console.log(data)
-  // winCheck()
+  const turns = data.turns
+  console.log('turns', turns)
+  victory = boardCheck(turns)
 }
 
-// function winCheck() {
+function boardCheck(boardstate) {
+  if (boardstate.length < 5) {
+    return false
+  } else {
 
-// }
+  }
+}
 
 
 function makeMove() {
