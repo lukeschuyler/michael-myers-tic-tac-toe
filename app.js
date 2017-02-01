@@ -7,7 +7,10 @@ const config = {
   };
   firebase.initializeApp(config);
 
-const turnsRef = firebase.database().ref('turns')
+let currentGame;
+let turnsRef = firebase.database().ref('games/' + currentGame + '/turns')
+const gamesRef = firebase.database().ref('games')
+let userRef = firebase.database().ref('games/' + currentGame + '/users')
 
 $('.square').click(makeMove)
 
@@ -15,18 +18,20 @@ $('.new-game').click(newGame)
 
 	let i = 0
 	function makeMove() {
+		console.log(i)
 		let square = $(this).attr('id')
 		let turn;
 		if ((i % 2) === 0 || i === 0) {
 			turn = '<span class="letter">X</span>'
 			$(this).html(turn)
+			i++
 			return turnsRef.update({ [square] : 'X' })
 		} else {
 			turn = '<span class="letter">O</span>'
 			$(this).html(turn)
+			i++
 			return turnsRef.update({ [square] : 'O' })
 		}
-		i++
 	}
 
 function newGame() {
@@ -34,5 +39,10 @@ function newGame() {
 	document.querySelectorAll('.square').forEach(function(square) {
 		square.innerText = null
 	})
-	firebase.database().push(newBoard)
+	gamesRef.push(newBoard)
+	  .then(data => currentGame = data.path.o[1])
+	  .then(() => turnsRef = firebase.database().ref('games/' + currentGame + '/turns'))
+	i = 0;
 }
+
+newGame();
