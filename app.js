@@ -8,6 +8,7 @@ const config = {
 
 firebase.initializeApp(config);
 
+const turnsRef = firebase.database().ref('turns')
 
 /*********************************
 functions
@@ -35,3 +36,34 @@ $('.square').click(function() {
 })
 
 firebase.database().ref('turns').on('value', onUpdate)
+
+
+
+
+$('.square').click(makeMove)
+
+$('.new-game').click(newGame)
+
+	let i = 0
+	function makeMove() {
+		let square = $(this).attr('id')
+		let turn;
+		if ((i % 2) === 0 || i === 0) {
+			turn = '<span class="letter">X</span>'
+			$(this).html(turn)
+			return turnsRef.update({ [square] : 'X' })
+		} else {
+			turn = '<span class="letter">O</span>'
+			$(this).html(turn)
+			return turnsRef.update({ [square] : 'O' })
+		}
+		i++
+	}
+
+function newGame() {
+	const newBoard = { turns : 'test' }
+	document.querySelectorAll('.square').forEach(function(square) {
+		square.innerText = null
+	})
+	firebase.database().push(newBoard)
+}
