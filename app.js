@@ -37,10 +37,10 @@ function resetSeats() {
 	$('.seatTwo').removeClass('btn-primary')
 	$('.seatOne').addClass('btn-default')
 	$('.seatTwo').addClass('btn-default')
+}
+
 let i = 0
 let winner = ""
-
-let i = 0;
 
 function makeMove() {
 	if (this.innerHTML === '') {
@@ -63,6 +63,7 @@ function makeMove() {
 
 function newGame() {
 	let removeGame = { [currentGame] : null }
+	console.log(currentGame)
 	gamesRef.update(removeGame)
 	const newBoard = { turns : ["", "", "", "", "", "", "", "", ""] }
 	document.querySelectorAll('.square').forEach(function(square) {
@@ -188,22 +189,6 @@ function makeMove() {
     return turnsRef.update({ [square] : 'O' })
   }
 }
-
-function newGame() {
-  const newBoard = { "turns" : ["","","","","","","","",""] }
-  document.querySelectorAll('.square').forEach(function(square) {
-    square.innerText = null
-  })
-  gamesRef.push(newBoard)
-    .then(data => currentGame = data.path.o[1])
-    .then(() => {
-      turnsRef = firebase.database().ref('games/' + currentGame + '/turns')
-      currentGamesRef = firebase.database().ref('games/' + currentGame)
-      currentGamesRef.on('value', onUpdate)
-    })
-  i = 0;
-}
-
 
 
 /*********************************
