@@ -18,7 +18,6 @@ $('.new-game').click(newGame)
 
 	let i = 0
 	function makeMove() {
-		console.log(i)
 		let square = $(this).attr('id')
 		let turn;
 		if ((i % 2) === 0 || i === 0) {
@@ -34,7 +33,10 @@ $('.new-game').click(newGame)
 		}
 	}
 
+
 function newGame() {
+	let removeGame = { [currentGame] : null }
+	gamesRef.update(removeGame)
 	const newBoard = { turns : 'test' }
 	document.querySelectorAll('.square').forEach(function(square) {
 		square.innerText = null
