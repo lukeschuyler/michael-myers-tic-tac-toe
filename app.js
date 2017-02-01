@@ -12,37 +12,18 @@ firebase.initializeApp(config);
 /*********************************
 functions
 *********************************/
-function checkDiags() {
-  //look at both diags and check if each square in diag are xs or os
-  const diag1 = []
-  const diag2 = []
-  const diags = [diag1,diag2]
-  for(var i = 0, length1 = diags.length; i < length1; i++){
-    diags[i]
-  }
+
+
+
+function onUpdate(snap) {
+  const data = snap.val()
+  console.log(snap.val)
+  // winCheck()
 }
 
-function checkCols() {
-  //loop through cols and check to see if all squares in col are xs or os
-  const cols = []
-  for(var i = 0, length1 = cols.length; i < length1; i++){
-    cols[i]
-  }
-}
+// function winCheck() {
 
-function checkRows() {
-  //loop through rows and check to see if all squares in row are xs or os
-  const rows = []
-  for(var i = 0, length1 = rows.length; i < length1; i++){
-    rows[i]
-  }
-}
-
-function winCheck() {
-  checkRows()
-  checkCols()
-  checkDiags()
-}
+// }
 
 
 
@@ -50,5 +31,7 @@ function winCheck() {
 event listeners
 *********************************/
 $('.square').click(function() {
-	console.log(this.dataset)
+  console.log(this.dataset)
 })
+
+firebase.database().ref('turns').on('value', onUpdate)
