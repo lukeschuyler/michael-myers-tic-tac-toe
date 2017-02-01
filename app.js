@@ -20,6 +20,7 @@ let currentSeatOne;
 let currentSeatTwo;
 const gamesRef = firebase.database().ref('games')
 let userRef = firebase.database().ref('games/' + currentGame + '/users')
+
 let i = 0
 let winner = ""
 
@@ -64,20 +65,22 @@ function makeMove() {
 
 
 function newGame() {
-  let removeGame = { [currentGame] : null }
-  console.log(currentGame)
-  gamesRef.update(removeGame)
-  const newBoard = { turns : ["", "", "", "", "", "", "", "", ""] }
-  document.querySelectorAll('.square').forEach(function(square) {
-    square.innerText = null
-  })
-  gamesRef.push(newBoard)
-    .then(data => currentGame = data.path.o[1])
-    .then(() => {
-      turnsRef = firebase.database().ref('games/' + currentGame + '/turns')
-      userRef = firebase.database().ref('games/' + currentGame + '/users')
-  })
-  i = 0;
+	let removeGame = { [currentGame] : null }
+	console.log(currentGame)
+	gamesRef.update(removeGame)
+	const newBoard = { turns : ["", "", "", "", "", "", "", "", ""] }
+	document.querySelectorAll('.square').forEach(function(square) {
+		square.innerText = null
+	})
+	gamesRef.push(newBoard)
+	  .then(data => currentGame = data.path.o[1])
+	  .then(() => {
+	  	turnsRef = firebase.database().ref('games/' + currentGame + '/turns')
+	  	userRef = firebase.database().ref('games/' + currentGame + '/users')
+	  	currentGamesRef = firebase.database().ref('games/' + currentGame)
+      currentGamesRef.on('value', onUpdate)
+	})
+	i = 0;
 }
 
 $('.seat').click(function(e) {
@@ -171,7 +174,6 @@ function onUpdate(snap) {
 
 
 function makeMove() {
-  // console.log(i)
   let square = $(this).attr('id')
   let turn;
   if ((i % 2) === 0 || i === 0) {
@@ -197,8 +199,6 @@ $('.square').click(makeMove)
 
 // user clicks new game button
 $('.new-game').click(newGame)
-
-
 
 /*********************************
 starts a new game as soon as app starts
