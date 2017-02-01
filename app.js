@@ -174,7 +174,6 @@ function onUpdate(snap) {
 
 
 function makeMove() {
-  // console.log(i)
   let square = $(this).attr('id')
   let turn;
   if ((i % 2) === 0 || i === 0) {
@@ -200,11 +199,6 @@ $('.square').click(makeMove)
 
 // user clicks new game button
 $('.new-game').click(newGame)
-
-// the moves array changes
-// currentGamesRef.on('child_changed', onUpdate)
-
-
 
 /*********************************
 starts a new game as soon as app starts
