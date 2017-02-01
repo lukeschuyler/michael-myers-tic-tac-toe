@@ -7,7 +7,11 @@ const config = {
   };
   firebase.initializeApp(config);
 
+// const turnsRef = firebase.
+
 $('.square').click(makeMove)
+
+$('.new-game').click(newGame)
 
 	let i = 0
 	function makeMove() {
@@ -24,3 +28,9 @@ $('.square').click(makeMove)
 		}
 		i++
 	}
+
+function newGame() {
+	document.querySelectorAll('.square').forEach(function(square) {
+		square.innerText = null
+	})
+}
