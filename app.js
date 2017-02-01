@@ -21,9 +21,22 @@ let currentGamesRef
 let currentSeatOne;
 let currentSeatTwo;
 
-
 const gamesRef = firebase.database().ref('games')
 let userRef = firebase.database().ref('games/' + currentGame + '/users')
+
+function checkSeats() {
+	if (document.querySelector('.seatOne').innerHTML && document.querySelector('.seatTwo').innerHTML === 'Seat Taken') {
+		userRef.update({ twoplayers : true, [currentSeatOne] : 'X', [currentSeatTwo] : 'O' })
+	}
+}
+
+function resetSeats() {
+	$('.seatOne').html('Join Seat 1 (X)')
+	$('.seatTwo').html('Join Seat 2 (O)')
+	$('.seatOne').removeClass('btn-primary')
+	$('.seatTwo').removeClass('btn-primary')
+	$('.seatOne').addClass('btn-default')
+	$('.seatTwo').addClass('btn-default')
 let i = 0
 let winner = ""
 
@@ -68,8 +81,19 @@ $('.seat').click(function(e) {
 	$(this).html('Seat Taken')
 	$(this).removeClass('btn-default')
 	$(this).addClass('btn-primary')
-	if (document.querySelector('.seatOne').innerHTML === 'Seat Taken' && document.querySelector('.seatTwo').innerHTML === 'Seat Taken') {
-		userRef.update({twoplayers : true})
+	console.log($(this).html('Seat Taken'))
+	if ($(this).hasClass('seatOne') === true) {
+		firebase.auth().signInAnonymously()
+			.then(val => currentSeatOne = val.uid)
+			.then(function() {
+				checkSeats()
+			})
+	} else if ($(this).hasClass('seatTwo') === true){
+		firebase.auth().signInAnonymously()
+			.then(val => currentSeatTwo = val.uid)
+			.then(function() {
+				checkSeats()
+			})
 	}
 })
 
