@@ -14,7 +14,8 @@ variable declarations
 *********************************/
 
 let currentGame;
-let turnsRef = firebase.database().ref('games/' + currentGame + '/turns')
+let turnsRef
+let currentGamesRef
 const gamesRef = firebase.database().ref('games')
 let userRef = firebase.database().ref('games/' + currentGame + '/users')
 let i = 0
@@ -87,6 +88,7 @@ function winCheck(boardstate) {
 }
 
 function onUpdate(snap) {
+  console.log("snap", snap)
   const data = snap.val()
   const turns = data.turns
   console.log('turns', turns)
@@ -113,13 +115,17 @@ function makeMove() {
 }
 
 function newGame() {
-  const newBoard = { "turns" : ["","","","","","","",""] }
+  const newBoard = { "turns" : ["","","","","","","","",""] }
   document.querySelectorAll('.square').forEach(function(square) {
     square.innerText = null
   })
   gamesRef.push(newBoard)
     .then(data => currentGame = data.path.o[1])
-    .then(() => turnsRef = firebase.database().ref('games/' + currentGame + '/turns'))
+    .then(() => {
+      turnsRef = firebase.database().ref('games/' + currentGame + '/turns')
+      currentGamesRef = firebase.database().ref('games/' + currentGame)
+      currentGamesRef.on('value', onUpdate)
+    })
   i = 0;
 }
 
@@ -134,7 +140,8 @@ $('.square').click(makeMove)
 // user clicks new game button
 $('.new-game').click(newGame)
 
-gamesRef.on('child_changed', onUpdate)
+// the moves array changes
+// currentGamesRef.on('child_changed', onUpdate)
 
 
 
