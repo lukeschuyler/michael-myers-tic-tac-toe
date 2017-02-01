@@ -1,10 +1,10 @@
 .square {
 	border: 1px solid black;
-	height: 150px;
+	height: 15rem;
 }
 
 .game-board {
   font-family: 'Nosifer', cursive;
-  font-size: 100px;
+  font-size: 10.5rem;
   text-align: center;
 }
