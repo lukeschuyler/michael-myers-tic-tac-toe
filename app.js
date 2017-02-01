@@ -7,6 +7,20 @@ const config = {
   };
   firebase.initializeApp(config);
 
-$('.square').click(function() {
-	console.log(this.dataset)
-})
+$('.square').click(makeMove)
+
+	let i = 0
+	function makeMove() {
+		let square = $(this).attr('data-square')
+		let turn;
+		if ((i % 2) === 0 || i === 0) {
+			turn = '<span class="letter">X</span>'
+			$(this).html(turn)
+			// return turnsRef.update({ [square] : 'X' })
+		} else {
+			turn = '<span class="letter">O</span>'
+			$(this).html(turn)
+			// return turnsRef.update({ [square] : 'O' })
+		}
+		i++
+	}
