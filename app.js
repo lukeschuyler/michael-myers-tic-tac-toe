@@ -19,7 +19,7 @@ let currentGamesRef
 let currentSeatOne;
 let currentSeatTwo;
 const gamesRef = firebase.database().ref('games')
-const userRef = firebase.database().ref('games/' + currentGame + '/users')
+let userRef = firebase.database().ref('games/' + currentGame + '/users')
 
 function checkSeats() {
 	if (document.querySelector('.seatOne').innerHTML && document.querySelector('.seatTwo').innerHTML === 'Seat Taken') {
@@ -72,6 +72,8 @@ function newGame() {
 	  .then(() => {
 	  	turnsRef = firebase.database().ref('games/' + currentGame + '/turns')
 	  	userRef = firebase.database().ref('games/' + currentGame + '/users')
+	  	currentGamesRef = firebase.database().ref('games/' + currentGame)
+      currentGamesRef.on('value', onUpdate)
 	})
 	i = 0;
 }
