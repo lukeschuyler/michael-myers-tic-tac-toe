@@ -51,13 +51,14 @@ $('.new-game').click(newGame)
 		if ((i % 2) === 0 || i === 0) {
 			turn = '<span class="letter">X</span>'
 			$(this).html(turn)
+      i++
 			return turnsRef.update({ [square] : 'X' })
 		} else {
 			turn = '<span class="letter">O</span>'
 			$(this).html(turn)
-			return turnsRef.update({ [square] : 'O' })
-		}
-		i++
+		  i++
+      return turnsRef.update({ [square] : 'O' })
+    }
 	}
 
 function newGame() {
