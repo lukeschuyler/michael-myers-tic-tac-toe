@@ -60,7 +60,7 @@ function makeMove() {
 }
 
 function newGame() {
-  const newBoard = { turns : 'test' }
+  const newBoard = { "turns" : ["","","","","","","",""] }
   document.querySelectorAll('.square').forEach(function(square) {
     square.innerText = null
   })
