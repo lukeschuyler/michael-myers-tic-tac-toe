@@ -14,9 +14,14 @@ variable declarations
 *********************************/
 
 let currentGame;
+
+let turnsRef
+let currentGamesRef
+
 let currentSeatOne;
 let currentSeatTwo;
-let turnsRef = firebase.database().ref('games/' + currentGame + '/turns')
+
+
 const gamesRef = firebase.database().ref('games')
 let userRef = firebase.database().ref('games/' + currentGame + '/users')
 let i = 0
@@ -127,10 +132,13 @@ function winCheck(boardstate) {
   } else if (boardstate[2] && boardstate[5] && boardstate[8] === "X") {
     winner = "X"
     return true
+  } else {
+    return false
   }
 }
 
 function onUpdate(snap) {
+  console.log("snap", snap)
   const data = snap.val()
   const turns = data.turns
   console.log('turns', turns)
@@ -138,6 +146,41 @@ function onUpdate(snap) {
     alert(`${winner} Won!`)
   }
 }
+
+
+function makeMove() {
+  // console.log(i)
+  let square = $(this).attr('id')
+  let turn;
+  if ((i % 2) === 0 || i === 0) {
+    turn = '<span class="letter">X</span>'
+    $(this).html(turn)
+    i++
+    return turnsRef.update({ [square] : 'X' })
+  } else {
+    turn = '<span class="letter">O</span>'
+    $(this).html(turn)
+    i++
+    return turnsRef.update({ [square] : 'O' })
+  }
+}
+
+function newGame() {
+  const newBoard = { "turns" : ["","","","","","","","",""] }
+  document.querySelectorAll('.square').forEach(function(square) {
+    square.innerText = null
+  })
+  gamesRef.push(newBoard)
+    .then(data => currentGame = data.path.o[1])
+    .then(() => {
+      turnsRef = firebase.database().ref('games/' + currentGame + '/turns')
+      currentGamesRef = firebase.database().ref('games/' + currentGame)
+      currentGamesRef.on('value', onUpdate)
+    })
+  i = 0;
+}
+
+
 
 /*********************************
 event listeners
@@ -149,7 +192,8 @@ $('.square').click(makeMove)
 // user clicks new game button
 $('.new-game').click(newGame)
 
-gamesRef.on('child_changed', onUpdate)
+// the moves array changes
+// currentGamesRef.on('child_changed', onUpdate)
 
 
 
