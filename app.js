@@ -81,6 +81,8 @@ function winCheck(boardstate) {
   } else if (boardstate[2] && boardstate[5] && boardstate[8] === "X") {
     winner = "X"
     return true
+  } else {
+    return false
   }
 }
 
