@@ -21,11 +21,20 @@ let currentSeatTwo;
 const gamesRef = firebase.database().ref('games')
 let userRef = firebase.database().ref('games/' + currentGame + '/users')
 
+let i = 0
+let winner = ""
+
+
+/*********************************
+functions
+*********************************/
+
 function checkSeats() {
 	if (document.querySelector('.seatOne').innerHTML && document.querySelector('.seatTwo').innerHTML === 'Seat Taken') {
 		userRef.update({ twoplayers : true, [currentSeatOne] : 'X', [currentSeatTwo] : 'O' })
 	}
 }
+
 
 function resetSeats() {
 	$('.seatOne').html('Join Seat 1 (X)')
@@ -36,26 +45,22 @@ function resetSeats() {
 	$('.seatTwo').addClass('btn-default')
 }
 
-
-let i = 0
-let winner = ""
-
 function makeMove() {
-	if (this.innerHTML === '') {
-		let square = $(this).attr('id')
-		let turn;
-		if ((i % 2) === 0 || i === 0) {
-			turn = '<span class="letter">X</span>'
-			$(this).html(turn)
-			i++
-			return turnsRef.update({ [square] : 'X' })
-		} else {
-			turn = '<span class="letter">O</span>'
-			$(this).html(turn)
-			i++
-			return turnsRef.update({ [square] : 'O' })
-		}
-	}
+  if (this.innerHTML === '') {
+    let square = $(this).attr('id')
+    let turn;
+    if ((i % 2) === 0 || i === 0) {
+      turn = '<span class="letter">X</span>'
+      $(this).html(turn)
+      i++
+      return turnsRef.update({ [square] : 'X' })
+    } else {
+      turn = '<span class="letter">O</span>'
+      $(this).html(turn)
+      i++
+      return turnsRef.update({ [square] : 'O' })
+    }
+  }
 }
 
 
@@ -79,28 +84,25 @@ function newGame() {
 }
 
 $('.seat').click(function(e) {
-	$(this).html('Seat Taken')
-	$(this).removeClass('btn-default')
-	$(this).addClass('btn-primary')
-	console.log($(this).html('Seat Taken'))
-	if ($(this).hasClass('seatOne') === true) {
-		firebase.auth().signInAnonymously()
-			.then(val => currentSeatOne = val.uid)
-			.then(function() {
-				checkSeats()
-			})
-	} else if ($(this).hasClass('seatTwo') === true){
-		firebase.auth().signInAnonymously()
-			.then(val => currentSeatTwo = val.uid)
-			.then(function() {
-				checkSeats()
-			})
-	}
+  $(this).html('Seat Taken')
+  $(this).removeClass('btn-default')
+  $(this).addClass('btn-primary')
+  console.log($(this).html('Seat Taken'))
+  if ($(this).hasClass('seatOne') === true) {
+    firebase.auth().signInAnonymously()
+      .then(val => currentSeatOne = val.uid)
+      .then(function() {
+        checkSeats()
+      })
+  } else if ($(this).hasClass('seatTwo') === true){
+    firebase.auth().signInAnonymously()
+      .then(val => currentSeatTwo = val.uid)
+      .then(function() {
+        checkSeats()
+      })
+  }
 })
 
-/*********************************
-functions
-*********************************/
 
 function winCheck(boardstate) {
   // checks rows for O win
