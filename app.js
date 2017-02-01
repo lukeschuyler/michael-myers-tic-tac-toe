@@ -8,13 +8,27 @@ const config = {
 
 firebase.initializeApp(config);
 
-//varible declarations
-const rows = []
-const cols = []
 
 
-//functions
+
+/*********************************
+functions
+*********************************/
+function checkDiags() {
+  //look at both diags and check if each square in diag are xs or os
+}
+
+function checkCols() {
+  //loop through cols and check to see if all squares in col are xs or os
+  const cols = []
+  for(var i = 0, length1 = cols.length; i < length1; i++){
+    cols[i]
+  }
+}
+
 function checkRows() {
+  //loop through rows and check to see if all squares in row are xs or os
+  const rows = []
   for(var i = 0, length1 = rows.length; i < length1; i++){
     rows[i]
   }
@@ -26,7 +40,11 @@ function winCheck() {
   checkDiags()
 }
 
-//event listeners
+
+
+/*********************************
+event listeners
+*********************************/
 $('.square').click(function() {
 	console.log(this.dataset)
 })
