@@ -9,13 +9,17 @@ const config = {
 firebase.initializeApp(config);
 
 
-
-
 /*********************************
 functions
 *********************************/
 function checkDiags() {
   //look at both diags and check if each square in diag are xs or os
+  const diag1 = []
+  const diag2 = []
+  const diags = [diag1,diag2]
+  for(var i = 0, length1 = diags.length; i < length1; i++){
+    diags[i]
+  }
 }
 
 function checkCols() {
