@@ -47,4 +47,11 @@ function newGame() {
 	i = 0;
 }
 
+$('.seat').click(function() {
+	$(this).html('Seat Taken')
+	$(this).removeClass('btn-default')
+	$(this).addClass('btn-primary')
+	// Add current user info to firebase current game
+})
+
 newGame();
