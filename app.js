@@ -20,6 +20,23 @@ let currentSeatOne;
 let currentSeatTwo;
 const gamesRef = firebase.database().ref('games')
 const userRef = firebase.database().ref('games/' + currentGame + '/users')
+
+function checkSeats() {
+	if (document.querySelector('.seatOne').innerHTML && document.querySelector('.seatTwo').innerHTML === 'Seat Taken') {
+		userRef.update({ twoplayers : true, [currentSeatOne] : 'X', [currentSeatTwo] : 'O' })
+	}
+}
+
+function resetSeats() {
+	$('.seatOne').html('Join Seat 1 (X)')
+	$('.seatTwo').html('Join Seat 2 (O)')
+	$('.seatOne').removeClass('btn-primary')
+	$('.seatTwo').removeClass('btn-primary')
+	$('.seatOne').addClass('btn-default')
+	$('.seatTwo').addClass('btn-default')
+}
+
+
 let i = 0
 let winner = ""
 
@@ -44,6 +61,7 @@ function makeMove() {
 
 function newGame() {
 	let removeGame = { [currentGame] : null }
+	console.log(currentGame)
 	gamesRef.update(removeGame)
 	const newBoard = { turns : ["", "", "", "", "", "", "", "", ""] }
 	document.querySelectorAll('.square').forEach(function(square) {
@@ -62,8 +80,19 @@ $('.seat').click(function(e) {
 	$(this).html('Seat Taken')
 	$(this).removeClass('btn-default')
 	$(this).addClass('btn-primary')
-	if (document.querySelector('.seatOne').innerHTML === 'Seat Taken' && document.querySelector('.seatTwo').innerHTML === 'Seat Taken') {
-		userRef.update({twoplayers : true})
+	console.log($(this).html('Seat Taken'))
+	if ($(this).hasClass('seatOne') === true) {
+		firebase.auth().signInAnonymously()
+			.then(val => currentSeatOne = val.uid)
+			.then(function() {
+				checkSeats()
+			})
+	} else if ($(this).hasClass('seatTwo') === true){
+		firebase.auth().signInAnonymously()
+			.then(val => currentSeatTwo = val.uid)
+			.then(function() {
+				checkSeats()
+			})
 	}
 })
 
@@ -156,22 +185,6 @@ function makeMove() {
     return turnsRef.update({ [square] : 'O' })
   }
 }
-
-function newGame() {
-  const newBoard = { "turns" : ["","","","","","","","",""] }
-  document.querySelectorAll('.square').forEach(function(square) {
-    square.innerText = null
-  })
-  gamesRef.push(newBoard)
-    .then(data => currentGame = data.path.o[1])
-    .then(() => {
-      turnsRef = firebase.database().ref('games/' + currentGame + '/turns')
-      currentGamesRef = firebase.database().ref('games/' + currentGame)
-      currentGamesRef.on('value', onUpdate)
-    })
-  i = 0;
-}
-
 
 
 /*********************************
