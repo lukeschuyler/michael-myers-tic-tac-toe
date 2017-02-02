@@ -1,6 +1,63 @@
-.square {
-	border: 1px solid black;
-	height: 200px;
+body {
+	font-family: 'Nosifer', cursive;
+	background: linear-gradient(rgba(0,0,0, .7), rgba(0,0,0,.7)), url(http://wallpapercave.com/wp/2Rqnmvp.jpg) no-repeat center/cover fixed
 }
 
-$('')
+.game-board .square {
+	border: 1px solid #bb0a1e;
+	height: 15rem;
+}
+
+.game-board {
+  font-size: 10.5rem;
+  text-align: center;
+  color: #bb0a1e;
+  background-color: rgba(0,0,0, .8)
+}
+
+.currentTurn {
+	font-size: 30px;
+	color: #bb0a1e;
+}
+
+#currentTable {
+	color: #bb0a1e;
+}
+
+.table-row {
+	margin-bottom: 5%;
+	margin-top: 5%;
+}
+
+.seat-row {
+	margin-top: 5%;
+}
+
+.navbar {
+	font-size: 40px;
+	color: #bb0a1e;
+	text-align: center;
+}
+
+.choose {
+	font-size: 30px;
+	color: #bb0a1e;
+	text-align: center;
+}
+
+.win-board {
+  font-size: 10.5rem;
+  text-align: center;
+  color: #bb0a1e;
+  background-color: rgba(0,0,0, .8)
+}
+
+.win-spot {
+	font-size: 10.5rem;
+  text-align: center;
+  color: #bb0a1e;
+
+
+.chair {
+  max-width: 2em;
+}
