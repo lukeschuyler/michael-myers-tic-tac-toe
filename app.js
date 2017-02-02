@@ -20,7 +20,6 @@ let currentSeatOne;
 let currentSeatTwo;
 const gamesRef = firebase.database().ref('games')
 let userRef = firebase.database().ref('games/' + currentGame + '/users')
-
 let i = 0
 let winner = ""
 
