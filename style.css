@@ -1,6 +1,6 @@
 body {
 	font-family: 'Nosifer', cursive;
-	background: url(http://wallpapercave.com/wp/2Rqnmvp.jpg) no-repeat center/cover fixed
+	background: linear-gradient(rgba(0,0,0, .7), rgba(0,0,0,.7)), url(http://wallpapercave.com/wp/2Rqnmvp.jpg) no-repeat center/cover fixed
 }
 
 .square {
@@ -17,9 +17,30 @@ body {
 
 .currentTurn {
 	font-size: 30px;
+	color: #bb0a1e;
+}
+
+#currentTable {
+	color: #bb0a1e;
 }
 
 .table-row {
 	margin-bottom: 5%;
 	margin-top: 5%;
+}
+
+.seat-row {
+	margin-top: 5%;
+}
+
+.navbar {
+	font-size: 40px;
+	color: #bb0a1e;
+	text-align: center;
+}
+
+.choose {
+	font-size: 30px;
+	color: #bb0a1e;
+	text-align: center;
 }

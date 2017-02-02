@@ -20,9 +20,7 @@ let currentSeatOne;
 let currentSeatTwo;
 const gamesRef = firebase.database().ref('games')
 let userRef = firebase.database().ref('games/' + currentGame + '/users')
-
 let i = 0
-
 let winner = ""
 
 
@@ -92,7 +90,7 @@ function makeMove() {
 $('.seat').click(function(e) {
   $(this).html('Seat Taken')
   $(this).removeClass('btn-default')
-  $(this).addClass('btn-primary')
+  $(this).addClass('btn-danger')
   if ($(this).hasClass('seatOne') === true) {
     firebase.auth().signInAnonymously()
       .then(val => currentSeatOne = val.uid)
@@ -132,9 +130,10 @@ function newGame() {
 
 // TABLE CLICK EVENT 
 $('.table').click(function() {
+  currentGame = $(this).attr('id');
   $('.table-view').addClass('hidden')
   $('.game-view').removeClass('hidden')
-  currentGame = $(this).attr('id');
+  $('#currentTable').text(currentGame.slice(0,5) + ' ' +  currentGame.slice(5))
   newGame();
 })
 
