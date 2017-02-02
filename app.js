@@ -77,7 +77,7 @@ function newGame() {
 	  	turnsRef = firebase.database().ref('games/' + currentGame + '/turns')
 	  	userRef = firebase.database().ref('games/' + currentGame + '/users')
 	  	currentGamesRef = firebase.database().ref('games/' + currentGame)
-      currentGamesRef.on('value', onUpdate)
+      currentGamesRef.on('value', onUpdate) //listens for changes in database turns
 	})
 	i = 0;
 }
