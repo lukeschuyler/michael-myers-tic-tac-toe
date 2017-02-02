@@ -21,7 +21,7 @@ let currentSeatTwo;
 const gamesRef = firebase.database().ref('games')
 let userRef = firebase.database().ref('games/' + currentGame + '/users')
 
-let i = 0
+let turnCounter = 0
 
 let winner = ""
 
@@ -46,20 +46,20 @@ function resetSeats() {
 	$('.seatTwo').addClass('btn-default')
 }
 
-// TURN FUNCTION 
+// TURN FUNCTION
 function makeMove() {
   if (this.innerHTML === '') {
     let square = $(this).attr('id')
     let turn;
-    if ((i % 2) === 0 || i === 0) {
+    if ((turnCounter % 2) === 0 || i === 0) {
       turn = '<span class="letter">X</span>'
       $(this).html(turn)
-      i++
+      turnCounter++
       return turnsRef.update({ [square] : 'X' })
     } else {
       turn = '<span class="letter">O</span>'
       $(this).html(turn)
-      i++
+      turnCounter++
       return turnsRef.update({ [square] : 'O' })
     }
   }
@@ -130,7 +130,7 @@ function newGame() {
   i = 0;
 }
 
-// TABLE CLICK EVENT 
+// TABLE CLICK EVENT
 $('.table').click(function() {
   $('.table-view').addClass('hidden')
   $('.game-view').removeClass('hidden')
