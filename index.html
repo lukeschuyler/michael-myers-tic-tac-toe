@@ -8,8 +8,17 @@
 	<link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-
+	<div class="navbar navbar-inverse">
+		<div>
+			<h1>MICHAEL MYER'S TIC TAC TOE</h1>
+		</div>
+	</div>
 	<div class="table-view container-fluid">
+		<div class="pick-table-header">
+		 	<div>
+				<h1 class="choose">CHOOSE TABLE IF YOU DARE...</h1>
+			</div>
+		</div>
 		<div class="table-row row">
 			<div class="col-xs-4">
 				<button id="table1" class="table btn btn-danger">Table 1</button>
@@ -50,10 +59,13 @@
 			<div class="col-xs-4">
 				<button class="new-game btn btn-danger btn-lg">New Game</button>
 			</div>
-			<div class="col-xs-4 col-xs-offset-2">
+			<div class="col-xs-4">
 				<div class="currentTurn">
 					
 				</div>
+			</div>
+			<div class="col-xs-4">
+				<h1 id="currentTable"></h1>
 			</div>
 		</div>
 		<div class="game-board">
@@ -91,11 +103,11 @@
 				</div>
 			</div>
 		</div>
-		<div class="row">
-			<div class="col-xs-offset-2 col-xs-4">
+		<div class="seat-row row">
+			<div class="col-xs-offset-2 col-xs-5">
 				<button class="seat seatOne btn btn-default btn-lg">Join Seat 1 (X)</button>
 			</div>
-			<div class="col-xs-4">
+			<div class="col-xs-5">
 				<button class="seat seatTwo btn btn-default btn-lg">Join Seat 2 (O)</button>
 			</div>
 		</div>
