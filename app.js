@@ -150,10 +150,22 @@ function drawCheck(turns) {
   return drawGame
 }
 
+function getTurnCount(turns) {
+  let pastTurns = 0
+  for(var i = 0, length1 = turns.length; i < length1; i++){
+    if (turns[i] !== "") {
+      pastTurns++
+    }
+  }
+  return pastTurns
+}
+
 //function that runs after a move is made. gets database snapshot and checks for a winner
 function onUpdate(snap) {
   const data = snap.val()
   const turns = data.turns
+  turnCounter = getTurnCount(turns)
+  console.log("turnCounter", turnCounter)
   if(winCheck(turns)) {
     setTimeout(function(){
       alert(`${winner} WON!`)
