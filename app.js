@@ -94,7 +94,7 @@ $('.seat').click(function(e) {
 // WORKING NEW GAME FUNCTION WITH TABLES
 function newGame() {
   // console.log(currentGame)
-  $('.currentTurn').html("X's Turn")
+  // $('.currentTurn').html("X's Turn")
   // let removeGame = { [currentGame] : null }
   // gamesRef.update(removeGame)
   const newBoard = { [currentGame] : { turns : ["", "", "", "", "", "", "", "", ""] } }
@@ -144,7 +144,6 @@ function getTurnCount(turns) {
 //calls getTurnCount and sets the turn notification on board
 function turnUpdate(turns) {
   turnCounter = getTurnCount(turns)
-  console.log('turnCounter', turnCounter)
   if ((turnCounter % 2) === 0 || turnCounter === 0) {
     // x turn
     $('.currentTurn').html("X's Turn")
@@ -174,6 +173,7 @@ function onUpdate(snap) {
 // CHANGES X's AND O'S ACCORDING TO WHATS ON DATABASE
 function moveDom(snap) {
   const turns = snap.val()
+  console.log(turns)
   const squares = document.querySelectorAll('.square')
   for (let i = 0; i < turns.length; i++) {
     if (turns[i] !== squares[i] && turns[i] !== undefined) {
@@ -185,19 +185,36 @@ function moveDom(snap) {
 // CHANGE SEATS ON DOM ACCORDING TO PLAYERS AT TABLE ON DATABASE
 function updateSeats(snap) {
   let data = snap.val()
-  if (data.X) {
-    $('.seatOne').html('Seat Taken')
-    $('.seatOne').removeClass('btn-default')
-    $('.seatOne').addClass('btn-danger')
-  }
-  if (data.O) {
-    $('.seatTwo').html('Seat Taken')
-    $('.seatTwo').removeClass('btn-default')
-    $('.seatTwo').addClass('btn-danger')
+  // console.log(snap.val())
+  if (data) {
+    if (data.X) {
+      console.log('hello')
+      $('.seatOne').html('Seat Taken')
+      $('.seatOne').removeClass('btn-default')
+      $('.seatOne').addClass('btn-danger')
+    }
+    if (data.O) {
+      $('.seatTwo').html('Seat Taken')
+      $('.seatTwo').removeClass('btn-default')
+      $('.seatTwo').addClass('btn-danger')
+    }
   }
 }
 
-
+function updateSeatsONCE(snap) {
+  console.log(snap)
+  // if (data.X) {
+  //   console.log('hello')
+  //   $('.seatOne').html('Seat Taken')
+  //   $('.seatOne').removeClass('btn-default')
+  //   $('.seatOne').addClass('btn-danger')
+  // }
+  // if (data.O) {
+  //   $('.seatTwo').html('Seat Taken')
+  //   $('.seatTwo').removeClass('btn-default')
+  //   $('.seatTwo').addClass('btn-danger')
+  // }
+}
 
 /*********************************
 event listeners
@@ -210,12 +227,18 @@ $('.square').click(makeMove)
 $('.new-game').click(newGame)
 
 // TABLE CLICK EVENT
-$('.table').click(function() {
-  $('.table-view').addClass('hidden')
-  $('.game-view').removeClass('hidden')
-  currentGame = $(this).attr('id');
-  newGame();
-})
+ $('.table').click(function() {
+    currentGame = $(this).attr('id');
+    $('.table-view').addClass('hidden')
+    $('.game-view').removeClass('hidden')
+    $('#currentTable').text(currentGame.slice(0,5) + ' ' +  currentGame.slice(5))
+    userRef.once('value', updateSeatsONCE)
+    .then(function(snap) {
+      console.log(snap.val())
+      // if (snap)
+      newGame();
+    })
+  })
 
 
 
