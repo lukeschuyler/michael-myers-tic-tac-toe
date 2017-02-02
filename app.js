@@ -139,7 +139,6 @@ $('.table').click(function() {
 function drawCheck(turns) {
   let drawGame = true
   for(var i = 0, length1 = turns.length; i < length1; i++){
-    console.log('turns[i]', turns[i])
     if (turns[i] === "") {
       drawGame = false
     }
