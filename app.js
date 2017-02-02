@@ -1,3 +1,6 @@
+/*********************************
+firebase initialization
+*********************************/
 
 const config = {
   apiKey: "AIzaSyBw6ShnJKM2K59nC-x19TSBGsdd94KZGz0",
@@ -8,6 +11,8 @@ const config = {
 };
 
 firebase.initializeApp(config);
+
+
 
 /*********************************
 variable declarations
@@ -20,8 +25,9 @@ let currentSeatOne;
 let currentSeatTwo;
 const gamesRef = firebase.database().ref('games')
 let userRef = firebase.database().ref('games/' + currentGame + '/users')
-let i = 0
+let turnCounter = 0
 let winner = ""
+
 
 
 /*********************************
@@ -44,47 +50,24 @@ function resetSeats() {
 	$('.seatTwo').addClass('btn-default')
 }
 
-// TURN FUNCTION 
+// TURN FUNCTION
 function makeMove() {
   if (this.innerHTML === '') {
     let square = $(this).attr('id')
     let turn;
-    if ((i % 2) === 0 || i === 0) {
+    if ((turnCounter % 2) === 0 || turnCounter === 0) {
       turn = '<span class="letter">X</span>'
       $(this).html(turn)
-      i++
+      // turnCounter++
       return turnsRef.update({ [square] : 'X' })
     } else {
       turn = '<span class="letter">O</span>'
       $(this).html(turn)
-      i++
+      // turnCounter++
       return turnsRef.update({ [square] : 'O' })
     }
   }
 }
-
-// OLD NEW GAME FUNCTION, KEEPING JUST IN CASE
-// function newGame() {
-//   $('.currentTurn').html("X's Turn")
-// 	let removeGame = { [currentGame] : null }
-// 	gamesRef.update(removeGame)
-// 	const newBoard = { turns : ["", "", "", "", "", "", "", "", ""] }
-// 	document.querySelectorAll('.square').forEach(function(square) {
-// 		square.innerText = null
-// 	})
-// 	gamesRef.update(newBoard)
-// 	  // .then(data => currentGame = data.path.o[1])
-//     .then(data => console.log(data))
-//     // .then(data => currentGame = boardPicked)
-// 	  .then(() => {
-// 	  	turnsRef = firebase.database().ref('games/' + currentGame + '/turns')
-// 	  	userRef = firebase.database().ref('games/' + currentGame + '/users')
-// 	  	currentGamesRef = firebase.database().ref('games/' + currentGame)
-//       currentGamesRef.on('value', onUpdate)
-//       turnsRef.on('value', moveDom)
-// 	})
-// 	i = 0;
-// }
 
 // CLICK EVENTS FOR SEATS
 $('.seat').click(function(e) {
@@ -128,41 +111,59 @@ function newGame() {
   i = 0;
 }
 
-// TABLE CLICK EVENT 
-$('.table').click(function() {
-  currentGame = $(this).attr('id');
-  $('.table-view').addClass('hidden')
-  $('.game-view').removeClass('hidden')
-  $('#currentTable').text(currentGame.slice(0,5) + ' ' +  currentGame.slice(5))
-  newGame();
-})
-
+//checks to see if game is a draw
 function drawCheck(turns) {
   let drawGame = true
+  //loops to see if there are any squares not filled in
   for(var i = 0, length1 = turns.length; i < length1; i++){
-    console.log('turns[i]', turns[i])
     if (turns[i] === "") {
       drawGame = false
     }
-
   }
+  //checks to make sure a winner hasn't already been declared
   if (winner !== "") {
     drawGame = false
   }
   return drawGame
 }
 
+//gets turn count based on how many turns have been filled in in the database
+function getTurnCount(turns) {
+  let pastTurns = 0
+  // loops over turns in database and counts array positions that are not blank
+  for(var i = 0, length1 = turns.length; i < length1; i++){
+    if (turns[i] !== "") {
+      pastTurns++
+    }
+  }
+  return pastTurns
+}
+
+//calls getTurnCount and sets the turn notification on board
+function turnUpdate(turns) {
+  turnCounter = getTurnCount(turns)
+  console.log('turnCounter', turnCounter)
+  if ((turnCounter % 2) === 0 || turnCounter === 0) {
+    // x turn
+    $('.currentTurn').html("X's Turn")
+  } else {
+    //o turn
+    $('.currentTurn').html("O's Turn")
+  }
+}
+
 //function that runs after a move is made. gets database snapshot and checks for a winner
 function onUpdate(snap) {
   const data = snap.val()
   const turns = data.turns
-  if(winCheck(turns)) {
-    setTimeout(function(){
+  turnUpdate(turns) //update turn notification
+  if(winCheck(turns)) { //checks to see if someone won
+    setTimeout(function(){ //timeout to let character display before alert pops
       alert(`${winner} WON!`)
     }, 300)
   }
-  if(drawCheck(turns)) {
-    setTimeout(function(){
+  if(drawCheck(turns)) { //checks for draw
+    setTimeout(function(){ //timeout to let character display before alert pops
       alert(`DRAW`)
     }, 300)
   }
@@ -178,23 +179,6 @@ function moveDom(snap) {
   }
 }
 
-function makeMove() {
-  let square = $(this).attr('id')
-  let turn;
-  if ((i % 2) === 0 || i === 0) {
-    $('.currentTurn').html("O's Turn")
-    turn = '<span class="letter">X</span>'
-    $(this).html(turn)
-    i++
-    return turnsRef.update({ [square] : 'X' })
-  } else {
-    $('.currentTurn').html("X's Turn")
-    turn = '<span class="letter">O</span>'
-    $(this).html(turn)
-    i++
-    return turnsRef.update({ [square] : 'O' })
-  }
-}
 
 
 /*********************************
@@ -207,6 +191,40 @@ $('.square').click(makeMove)
 // user clicks new game button
 $('.new-game').click(newGame)
 
-/*********************************
-starts a new game as soon as app starts
-*********************************/
+// TABLE CLICK EVENT
+$('.table').click(function() {
+  $('.table-view').addClass('hidden')
+  $('.game-view').removeClass('hidden')
+  currentGame = $(this).attr('id');
+  newGame();
+})
+
+
+
+
+
+
+
+
+// OLD NEW GAME FUNCTION, KEEPING JUST IN CASE
+// function newGame() {
+//   $('.currentTurn').html("X's Turn")
+// 	let removeGame = { [currentGame] : null }
+// 	gamesRef.update(removeGame)
+// 	const newBoard = { turns : ["", "", "", "", "", "", "", "", ""] }
+// 	document.querySelectorAll('.square').forEach(function(square) {
+// 		square.innerText = null
+// 	})
+// 	gamesRef.update(newBoard)
+// 	  // .then(data => currentGame = data.path.o[1])
+//     .then(data => console.log(data))
+//     // .then(data => currentGame = boardPicked)
+// 	  .then(() => {
+// 	  	turnsRef = firebase.database().ref('games/' + currentGame + '/turns')
+// 	  	userRef = firebase.database().ref('games/' + currentGame + '/users')
+// 	  	currentGamesRef = firebase.database().ref('games/' + currentGame)
+//       currentGamesRef.on('value', onUpdate)
+//       turnsRef.on('value', moveDom)
+// 	})
+// 	i = 0;
+// }
