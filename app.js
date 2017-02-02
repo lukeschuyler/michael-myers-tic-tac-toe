@@ -160,12 +160,23 @@ function getTurnCount(turns) {
   return pastTurns
 }
 
+function turnUpdate(turns) {
+  turnCounter = getTurnCount(turns)
+  console.log('turnCounter', turnCounter)
+  if ((turnCounter % 2) === 0 || turnCounter === 0) {
+    $('.currentTurn').html("X's Turn")
+    turn = '<span class="letter">X</span>'
+  } else {
+    $('.currentTurn').html("O's Turn")
+    turn = '<span class="letter">O</span>'
+  }
+}
+
 //function that runs after a move is made. gets database snapshot and checks for a winner
 function onUpdate(snap) {
   const data = snap.val()
   const turns = data.turns
-  turnCounter = getTurnCount(turns)
-  console.log("turnCounter", turnCounter)
+  turnUpdate(turns)
   if(winCheck(turns)) {
     setTimeout(function(){
       alert(`${winner} WON!`)
