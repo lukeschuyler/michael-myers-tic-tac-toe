@@ -94,9 +94,9 @@ $('.seat').click(function(e) {
 // WORKING NEW GAME FUNCTION WITH TABLES
 function newGame() {
   // console.log(currentGame)
-  $('.currentTurnX').html("X's Turn")
-  let removeGame = { [currentGame] : null }
-  gamesRef.update(removeGame)
+  // $('.currentTurn').html("X's Turn")
+  // let removeGame = { [currentGame] : null }
+  // gamesRef.update(removeGame)
   const newBoard = { [currentGame] : { turns : ["", "", "", "", "", "", "", "", ""] } }
   document.querySelectorAll('.square').forEach(function(square) {
     square.innerText = null
@@ -146,12 +146,10 @@ function turnUpdate(turns) {
   turnCounter = getTurnCount(turns)
   if ((turnCounter % 2) === 0 || turnCounter === 0) {
     // x turn
-    $('.currentTurnX').html("X's Turn")
-    $('.currentTurnO').html("")
+    $('.currentTurn').html("X's Turn")
   } else {
     //o turn
-    $('.currentTurnX').html("")
-    $('.currentTurnO').html("O's Turn")
+    $('.currentTurn').html("O's Turn")
   }
 }
 
@@ -175,6 +173,7 @@ function onUpdate(snap) {
 // CHANGES X's AND O'S ACCORDING TO WHATS ON DATABASE
 function moveDom(snap) {
   const turns = snap.val()
+  console.log(turns)
   const squares = document.querySelectorAll('.square')
   for (let i = 0; i < turns.length; i++) {
     if (turns[i] !== squares[i] && turns[i] !== undefined) {

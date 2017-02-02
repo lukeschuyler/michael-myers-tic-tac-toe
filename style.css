@@ -3,7 +3,7 @@ body {
 	background: linear-gradient(rgba(0,0,0, .7), rgba(0,0,0,.7)), url(http://wallpapercave.com/wp/2Rqnmvp.jpg) no-repeat center/cover fixed
 }
 
-.square {
+.game-board .square {
 	border: 1px solid #bb0a1e;
 	height: 15rem;
 }
@@ -43,4 +43,17 @@ body {
 	font-size: 30px;
 	color: #bb0a1e;
 	text-align: center;
+}
+.win-board {
+  font-size: 10.5rem;
+  text-align: center;
+  color: #bb0a1e;
+  background-color: rgba(0,0,0, .8)
+}
+
+.win-spot {
+	font-size: 10.5rem;
+  text-align: center;
+  color: #bb0a1e;
+
 }
