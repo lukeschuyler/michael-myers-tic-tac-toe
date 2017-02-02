@@ -146,10 +146,12 @@ function turnUpdate(turns) {
   turnCounter = getTurnCount(turns)
   if ((turnCounter % 2) === 0 || turnCounter === 0) {
     // x turn
-    $('.currentTurn').html("X's Turn")
+    $('.currentTurnX').html("X's Turn")
+    $('.currentTurnO').html("")
   } else {
     //o turn
-    $('.currentTurn').html("O's Turn")
+    $('.currentTurnX').html("")
+    $('.currentTurnO').html("O's Turn")
   }
 }
 
@@ -160,12 +162,20 @@ function onUpdate(snap) {
   turnUpdate(turns) //update turn notification
   if(winCheck(turns)) { //checks to see if someone won
     setTimeout(function(){ //timeout to let character display before alert pops
-      alert(`${winner} WON!`)
+      // alert(`${winner} WON!`)
+      if (winner === 'X') {
+        $('.currentTurnX').html(`${winner} WINS`)
+        $('.currentTurnO').html(``)
+      } else {
+        $('.currentTurnO').html(`${winner} WINS`)
+        $('.currentTurnX').html(``)
+      }
     }, 300)
   }
   if(drawCheck(turns)) { //checks for draw
     setTimeout(function(){ //timeout to let character display before alert pops
-      alert(`DRAW`)
+     $('.currentTurnX').html(`DRAW`)
+     $('.currentTurnO').html(`DRAW`)
     }, 300)
   }
 }
