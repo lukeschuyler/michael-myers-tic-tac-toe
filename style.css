@@ -44,3 +44,7 @@ body {
 	color: #bb0a1e;
 	text-align: center;
 }
+
+.chair {
+  max-width: 2em;
+}
