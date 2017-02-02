@@ -30,7 +30,7 @@ functions
 
 function checkSeats() {
 	if (document.querySelector('.seatOne').innerHTML && document.querySelector('.seatTwo').innerHTML === 'Seat Taken') {
-		userRef.update({ twoplayers : true, [currentSeatOne] : 'X', [currentSeatTwo] : 'O' })
+		userRef.update({ twoplayers : true })
 	}
 }
 
@@ -95,12 +95,14 @@ $('.seat').click(function(e) {
     firebase.auth().signInAnonymously()
       .then(val => currentSeatOne = val.uid)
       .then(function() {
+        userRef.update({ X : currentSeatOne  })
         checkSeats()
       })
   } else if ($(this).hasClass('seatTwo') === true){
     firebase.auth().signInAnonymously()
       .then(val => currentSeatTwo = val.uid)
       .then(function() {
+        userRef.update({ O : currentSeatTwo })
         checkSeats()
       })
   }
@@ -123,7 +125,7 @@ function newGame() {
       currentGamesRef = firebase.database().ref('games/' + currentGame)
       currentGamesRef.on('value', onUpdate)
       turnsRef.on('value', moveDom)
-      console.log(currentGamesRef)
+      userRef.on('value', updateSeats)
   })
   i = 0;
 }
@@ -140,7 +142,6 @@ $('.table').click(function() {
 function drawCheck(turns) {
   let drawGame = true
   for(var i = 0, length1 = turns.length; i < length1; i++){
-    console.log('turns[i]', turns[i])
     if (turns[i] === "") {
       drawGame = false
     }
@@ -175,6 +176,20 @@ function moveDom(snap) {
     if (turns[i] !== squares[i] && turns[i] !== undefined) {
       squares[i].innerHTML = turns[i]
     }
+  }
+}
+
+function updateSeats(snap) {
+  let data = snap.val()
+  if (data.X) {
+    $('.seatOne').html('Seat Taken')
+    $('.seatOne').removeClass('btn-default')
+    $('.seatOne').addClass('btn-danger')
+  }
+  if (data.O) {
+    $('.seatTwo').html('Seat Taken')
+    $('.seatTwo').removeClass('btn-default')
+    $('.seatTwo').addClass('btn-danger')
   }
 }
 
