@@ -102,12 +102,10 @@ $('.seat').click(function(e) {
   }
 })
 
-
+//function that runs after a move is made. gets database snapshot and checks for a winner
 function onUpdate(snap) {
-  console.log("snap", snap)
   const data = snap.val()
   const turns = data.turns
-  console.log('turns', turns)
   if(winCheck(turns)) {
     alert(`${winner} Won!`)
   }
