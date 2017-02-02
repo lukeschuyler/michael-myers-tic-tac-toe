@@ -52,12 +52,12 @@ function makeMove() {
     if ((turnCounter % 2) === 0 || turnCounter === 0) {
       turn = '<span class="letter">X</span>'
       $(this).html(turn)
-      turnCounter++
+      // turnCounter++
       return turnsRef.update({ [square] : 'X' })
     } else {
       turn = '<span class="letter">O</span>'
       $(this).html(turn)
-      turnCounter++
+      // turnCounter++
       return turnsRef.update({ [square] : 'O' })
     }
   }
