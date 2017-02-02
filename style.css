@@ -44,6 +44,7 @@ body {
 	color: #bb0a1e;
 	text-align: center;
 }
+
 .win-board {
   font-size: 10.5rem;
   text-align: center;
@@ -56,4 +57,7 @@ body {
   text-align: center;
   color: #bb0a1e;
 
+
+.chair {
+  max-width: 2em;
 }
