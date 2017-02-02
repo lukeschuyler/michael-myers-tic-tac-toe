@@ -20,8 +20,6 @@ let currentSeatOne;
 let currentSeatTwo;
 const gamesRef = firebase.database().ref('games')
 let userRef = firebase.database().ref('games/' + currentGame + '/users')
-
-let i = 0
 let winner = ""
 
 
@@ -64,30 +62,33 @@ function makeMove() {
 }
 
 
-function newGame() {
-	let removeGame = { [currentGame] : null }
-	console.log(currentGame)
-	gamesRef.update(removeGame)
-	const newBoard = { turns : ["", "", "", "", "", "", "", "", ""] }
-	document.querySelectorAll('.square').forEach(function(square) {
-		square.innerText = null
-	})
-	gamesRef.push(newBoard)
-	  .then(data => currentGame = data.path.o[1])
-	  .then(() => {
-	  	turnsRef = firebase.database().ref('games/' + currentGame + '/turns')
-	  	userRef = firebase.database().ref('games/' + currentGame + '/users')
-	  	currentGamesRef = firebase.database().ref('games/' + currentGame)
-      currentGamesRef.on('value', onUpdate)
-	})
-	i = 0;
-}
+
+// function newGame() {
+//   $('.currentTurn').html("X's Turn")
+// 	let removeGame = { [currentGame] : null }
+// 	gamesRef.update(removeGame)
+// 	const newBoard = { turns : ["", "", "", "", "", "", "", "", ""] }
+// 	document.querySelectorAll('.square').forEach(function(square) {
+// 		square.innerText = null
+// 	})
+// 	gamesRef.update(newBoard)
+// 	  // .then(data => currentGame = data.path.o[1])
+//     .then(data => console.log(data))
+//     // .then(data => currentGame = boardPicked)
+// 	  .then(() => {
+// 	  	turnsRef = firebase.database().ref('games/' + currentGame + '/turns')
+// 	  	userRef = firebase.database().ref('games/' + currentGame + '/users')
+// 	  	currentGamesRef = firebase.database().ref('games/' + currentGame)
+//       currentGamesRef.on('value', onUpdate)
+//       turnsRef.on('value', moveDom)
+// 	})
+// 	i = 0;
+// }
 
 $('.seat').click(function(e) {
   $(this).html('Seat Taken')
   $(this).removeClass('btn-default')
   $(this).addClass('btn-primary')
-  console.log($(this).html('Seat Taken'))
   if ($(this).hasClass('seatOne') === true) {
     firebase.auth().signInAnonymously()
       .then(val => currentSeatOne = val.uid)
@@ -101,6 +102,34 @@ $('.seat').click(function(e) {
         checkSeats()
       })
   }
+})
+
+function newGame() {
+  // console.log(currentGame)
+  $('.currentTurn').html("X's Turn")
+  // let removeGame = { [currentGame] : null }
+  // gamesRef.update(removeGame)
+  const newBoard = { [currentGame] : { turns : ["", "", "", "", "", "", "", "", ""] } }
+  document.querySelectorAll('.square').forEach(function(square) {
+    square.innerText = null
+  })
+  gamesRef.update(newBoard)
+    .then(() => {
+      turnsRef = firebase.database().ref('games/' + currentGame + '/turns')
+      userRef = firebase.database().ref('games/' + currentGame + '/users')
+      currentGamesRef = firebase.database().ref('games/' + currentGame)
+      currentGamesRef.on('value', onUpdate)
+      turnsRef.on('value', moveDom)
+      console.log(currentGamesRef)
+  })
+  i = 0;
+}
+
+$('.table').click(function() {
+  $('.table-view').addClass('hidden')
+  $('.game-view').removeClass('hidden')
+  currentGame = $(this).attr('id');
+  newGame();
 })
 
 
@@ -163,25 +192,39 @@ function winCheck(boardstate) {
 }
 
 function onUpdate(snap) {
-  console.log("snap", snap)
+  // console.log("snap", snap)
   const data = snap.val()
   const turns = data.turns
-  console.log('turns', turns)
+  // console.log('turns', turns)
   if(winCheck(turns)) {
-    alert(`${winner} Won!`)
+    setTimeout(function(){
+      alert(`${winner} Won!`)
+    }, 300)
   }
 }
 
+function moveDom(snap) {
+  const turns = snap.val()
+  const squares = document.querySelectorAll('.square')
+  for (let i = 0; i < turns.length; i++) {
+    if (turns[i] !== squares[i] && turns[i] !== undefined) {
+      squares[i].innerHTML = turns[i]
+    }
+  }
+}
 
+let i = 0
 function makeMove() {
   let square = $(this).attr('id')
   let turn;
   if ((i % 2) === 0 || i === 0) {
+    $('.currentTurn').html("O's Turn")
     turn = '<span class="letter">X</span>'
     $(this).html(turn)
     i++
     return turnsRef.update({ [square] : 'X' })
   } else {
+    $('.currentTurn').html("X's Turn")
     turn = '<span class="letter">O</span>'
     $(this).html(turn)
     i++
@@ -203,5 +246,3 @@ $('.new-game').click(newGame)
 /*********************************
 starts a new game as soon as app starts
 *********************************/
-
-newGame();
