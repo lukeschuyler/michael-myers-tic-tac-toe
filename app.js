@@ -199,23 +199,23 @@ function moveDom(snap) {
   }
 }
 
-function makeMove() {
-  let square = $(this).attr('id')
-  let turn;
-  if ((i % 2) === 0 || i === 0) {
-    $('.currentTurn').html("O's Turn")
-    turn = '<span class="letter">X</span>'
-    $(this).html(turn)
-    i++
-    return turnsRef.update({ [square] : 'X' })
-  } else {
-    $('.currentTurn').html("X's Turn")
-    turn = '<span class="letter">O</span>'
-    $(this).html(turn)
-    i++
-    return turnsRef.update({ [square] : 'O' })
-  }
-}
+// function makeMove() {
+//   let square = $(this).attr('id')
+//   let turn;
+//   if ((i % 2) === 0 || i === 0) {
+//     $('.currentTurn').html("O's Turn")
+//     turn = '<span class="letter">X</span>'
+//     $(this).html(turn)
+//     i++
+//     return turnsRef.update({ [square] : 'X' })
+//   } else {
+//     $('.currentTurn').html("X's Turn")
+//     turn = '<span class="letter">O</span>'
+//     $(this).html(turn)
+//     i++
+//     return turnsRef.update({ [square] : 'O' })
+//   }
+// }
 
 
 /*********************************
