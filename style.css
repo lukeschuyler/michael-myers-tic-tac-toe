@@ -1,11 +1,25 @@
+body {
+	font-family: 'Nosifer', cursive;
+	background: url(http://wallpapercave.com/wp/2Rqnmvp.jpg) no-repeat center/cover fixed
+}
+
 .square {
-	border: 1px solid black;
+	border: 1px solid #bb0a1e;
 	height: 15rem;
 }
 
 .game-board {
-  font-family: 'Nosifer', cursive;
   font-size: 10.5rem;
   text-align: center;
   color: #bb0a1e;
+  background-color: rgba(0,0,0, .8)
+}
+
+.currentTurn {
+	font-size: 30px;
+}
+
+.table-row {
+	margin-bottom: 5%;
+	margin-top: 5%;
 }
