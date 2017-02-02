@@ -146,10 +146,12 @@ function turnUpdate(turns) {
   turnCounter = getTurnCount(turns)
   if ((turnCounter % 2) === 0 || turnCounter === 0) {
     // x turn
-    $('.currentTurn').html("X's Turn")
+    $('.currentTurnX').html("X's Turn")
+    $('.currentTurnO').html("")
   } else {
     //o turn
-    $('.currentTurn').html("O's Turn")
+    $('.currentTurnX').html("")
+    $('.currentTurnO').html("O's Turn")
   }
 }
 
