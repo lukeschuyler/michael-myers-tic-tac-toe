@@ -107,7 +107,10 @@ function onUpdate(snap) {
   const data = snap.val()
   const turns = data.turns
   if(winCheck(turns)) {
-    alert(`${winner} Won!`)
+    alert(`${winner} WON!`)
+  }
+  if(drawCheck(turns)) {
+    alert('DRAW')
   }
 }
 
