@@ -73,7 +73,7 @@ function makeMove() {
 $('.seat').click(function(e) {
   $(this).html('Seat Taken')
   $(this).removeClass('btn-default')
-  $(this).addClass('btn-primary')
+  $(this).addClass('btn-danger')
   if ($(this).hasClass('seatOne') === true) {
     firebase.auth().signInAnonymously()
       .then(val => currentSeatOne = val.uid)
