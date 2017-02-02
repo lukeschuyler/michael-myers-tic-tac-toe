@@ -20,7 +20,6 @@ let currentSeatOne;
 let currentSeatTwo;
 const gamesRef = firebase.database().ref('games')
 let userRef = firebase.database().ref('games/' + currentGame + '/users')
-
 let i = 0
 let winner = ""
 
@@ -78,7 +77,7 @@ function newGame() {
 	  	turnsRef = firebase.database().ref('games/' + currentGame + '/turns')
 	  	userRef = firebase.database().ref('games/' + currentGame + '/users')
 	  	currentGamesRef = firebase.database().ref('games/' + currentGame)
-      currentGamesRef.on('value', onUpdate)
+      currentGamesRef.on('value', onUpdate) //listens for changes in database turns
 	})
 	i = 0;
 }
@@ -103,14 +102,29 @@ $('.seat').click(function(e) {
   }
 })
 
+function drawCheck(turns) {
+  let drawGame = true
+  for(var i = 0, length1 = turns.length; i < length1; i++){
+    console.log('turns[i]', turns[i])
+    if (turns[i] === "") {
+      drawGame = false
+    }
+  }
+  if (winner !== "") {
+    drawGame = false
+  }
+  return drawGame
+}
 
+//function that runs after a move is made. gets database snapshot and checks for a winner
 function onUpdate(snap) {
-  console.log("snap", snap)
   const data = snap.val()
   const turns = data.turns
-  console.log('turns', turns)
   if(winCheck(turns)) {
-    alert(`${winner} Won!`)
+    alert(`${winner} WON!`)
+  }
+  if(drawCheck(turns)) {
+    alert('DRAW')
   }
 }
 
