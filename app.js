@@ -49,7 +49,7 @@ function makeMove() {
   if (this.innerHTML === '') {
     let square = $(this).attr('id')
     let turn;
-    if ((turnCounter % 2) === 0 || i === 0) {
+    if ((turnCounter % 2) === 0 || turnCounter === 0) {
       turn = '<span class="letter">X</span>'
       $(this).html(turn)
       turnCounter++
