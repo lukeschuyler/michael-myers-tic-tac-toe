@@ -162,12 +162,20 @@ function onUpdate(snap) {
   turnUpdate(turns) //update turn notification
   if(winCheck(turns)) { //checks to see if someone won
     setTimeout(function(){ //timeout to let character display before alert pops
-      alert(`${winner} WON!`)
+      // alert(`${winner} WON!`)
+      if (winner === 'X') {
+        $('.currentTurnX').html(`${winner} WINS`)
+        $('.currentTurnO').html(``)
+      } else {
+        $('.currentTurnO').html(`${winner} WINS`)
+        $('.currentTurnX').html(``)
+      }
     }, 300)
   }
   if(drawCheck(turns)) { //checks for draw
     setTimeout(function(){ //timeout to let character display before alert pops
-      alert(`DRAW`)
+     $('.currentTurnX').html(`DRAW`)
+     $('.currentTurnO').html(`DRAW`)
     }, 300)
   }
 }
