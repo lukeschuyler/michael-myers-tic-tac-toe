@@ -165,10 +165,8 @@ function turnUpdate(turns) {
   console.log('turnCounter', turnCounter)
   if ((turnCounter % 2) === 0 || turnCounter === 0) {
     $('.currentTurn').html("X's Turn")
-    turn = '<span class="letter">X</span>'
   } else {
     $('.currentTurn').html("O's Turn")
-    turn = '<span class="letter">O</span>'
   }
 }
 
