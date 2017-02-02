@@ -1,3 +1,6 @@
+/*********************************
+firebase initialization
+*********************************/
 
 const config = {
   apiKey: "AIzaSyBw6ShnJKM2K59nC-x19TSBGsdd94KZGz0",
