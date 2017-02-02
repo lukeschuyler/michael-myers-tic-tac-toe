@@ -102,6 +102,20 @@ $('.seat').click(function(e) {
   }
 })
 
+function drawCheck(turns) {
+  let drawGame = true
+  for(var i = 0, length1 = turns.length; i < length1; i++){
+    console.log('turns[i]', turns[i])
+    if (turns[i] === "") {
+      drawGame = false
+    }
+  }
+  if (winner !== "") {
+    drawGame = false
+  }
+  return drawGame
+}
+
 //function that runs after a move is made. gets database snapshot and checks for a winner
 function onUpdate(snap) {
   const data = snap.val()
