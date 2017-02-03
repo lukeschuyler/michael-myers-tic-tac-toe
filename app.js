@@ -278,6 +278,7 @@ function tableClick(e) {
   newGame();
 }
 
+
 function disableBoard() {
   $('.square').off('click')
 }
@@ -291,6 +292,8 @@ function enableBoard(){
 
 
 function refreshPage() {
+  const newUsers = { users : {} }
+  currentGamesRef.update(newUsers)
   location.reload()
 }
 
