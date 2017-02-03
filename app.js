@@ -189,12 +189,12 @@ function updateSeats(snap) {
   if (data) {
     if (data.X) {
       console.log('hello')
-      $('.seatOne').html('Seat Taken')
+      $('.seatOne').html('X Seat Taken')
       $('.seatOne').removeClass('btn-default')
       $('.seatOne').addClass('btn-danger')
     }
     if (data.O) {
-      $('.seatTwo').html('Seat Taken')
+      $('.seatTwo').html('O Seat Taken')
       $('.seatTwo').removeClass('btn-default')
       $('.seatTwo').addClass('btn-danger')
     }
@@ -259,9 +259,16 @@ function tableClick(e) {
 }
 
 
+function refreshPage() {
+  location.reload()
+}
+
 /*********************************
 event listeners
 *********************************/
+
+// refresh page 
+$('.back-lobby').click(refreshPage)
 
 // user clicks on square
 $('.square').click(makeMove)

@@ -22,6 +22,8 @@ body {
 
 #currentTable {
 	color: #bb0a1e;
+	text-align: center;
+	letter-spacing: 7px;
 }
 
 .table-row {
