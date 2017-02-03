@@ -281,7 +281,7 @@ function newGame() {
   $('.currentTurnX').html("X's Turn")
   $('.currentTurnO').html(``)
   // enableBoard()
-  disableBoard()
+  // disableBoard()
 }
 
 function tableClick(e) {
