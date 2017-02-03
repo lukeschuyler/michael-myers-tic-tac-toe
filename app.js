@@ -191,12 +191,12 @@ function updateSeats(snap) {
   if (data) {
     if (data.X) {
       console.log('hello')
-      $('.seatOne').html('Seat Taken')
+      $('.seatOne').html('X Seat Taken')
       $('.seatOne').removeClass('btn-default')
       $('.seatOne').addClass('btn-danger')
     }
     if (data.O) {
-      $('.seatTwo').html('Seat Taken')
+      $('.seatTwo').html('O Seat Taken')
       $('.seatTwo').removeClass('btn-default')
       $('.seatTwo').addClass('btn-danger')
     }
@@ -230,10 +230,6 @@ function tableSetUp() {
 
 // WORKING NEW GAME FUNCTION WITH TABLES
 function newGame() {
-  // console.log(currentGame)
-  // $('.currentTurn').html("X's Turn")
-  // let removeGame = { [currentGame] : null }
-  // gamesRef.update(removeGame)
   currentGamesRef.on('value', onUpdate)
   turnsRef.on('value', moveDom)
   userRef.on('value', updateSeats)
@@ -277,43 +273,22 @@ function enableBoard(){
 
 
 
+function refreshPage() {
+  location.reload()
+}
+
 /*********************************
 event listeners
 *********************************/
 
+// refresh page 
+$('.back-lobby').click(refreshPage)
+
+// user clicks on square
+$('.square').click(makeMove)
 
 // user clicks new game button
 $('.new-game').click(newGame)
 
 // TABLE CLICK EVENT
  $('.table').click(tableClick)
-
-
-
-
-
-
-
-
-// OLD NEW GAME FUNCTION, KEEPING JUST IN CASE
-// function newGame() {
-//   $('.currentTurn').html("X's Turn")
-// 	let removeGame = { [currentGame] : null }
-// 	gamesRef.update(removeGame)
-// 	const newBoard = { turns : ["", "", "", "", "", "", "", "", ""] }
-// 	document.querySelectorAll('.square').forEach(function(square) {
-// 		square.innerText = null
-// 	})
-// 	gamesRef.update(newBoard)
-// 	  // .then(data => currentGame = data.path.o[1])
-//     .then(data => console.log(data))
-//     // .then(data => currentGame = boardPicked)
-// 	  .then(() => {
-// 	  	turnsRef = firebase.database().ref('games/' + currentGame + '/turns')
-// 	  	userRef = firebase.database().ref('games/' + currentGame + '/users')
-// 	  	currentGamesRef = firebase.database().ref('games/' + currentGame)
-//       currentGamesRef.on('value', onUpdate)
-//       turnsRef.on('value', moveDom)
-// 	})
-// 	i = 0;
-// }
