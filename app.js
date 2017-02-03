@@ -97,11 +97,11 @@ function newGame() {
   // $('.currentTurn').html("X's Turn")
   // let removeGame = { [currentGame] : null }
   // gamesRef.update(removeGame)
-  const newBoard = { [currentGame] : { turns : ["", "", "", "", "", "", "", "", ""] } }
+  const newTurns = { turns : ["", "", "", "", "", "", "", "", ""] }
   document.querySelectorAll('.square').forEach(function(square) {
     square.innerText = null
   })
-  gamesRef.update(newBoard)
+  turnsRef.update(newBoard)
     .then(() => {
       turnsRef = firebase.database().ref('games/' + currentGame + '/turns')
       userRef = firebase.database().ref('games/' + currentGame + '/users')
