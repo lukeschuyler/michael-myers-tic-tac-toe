@@ -37,6 +37,7 @@ functions
 function checkSeats() {
 	if (document.querySelector('.seatOne').innerHTML && document.querySelector('.seatTwo').innerHTML === 'Seat Taken') {
 		userRef.update({ twoplayers : true })
+    enableBoard()
 	}
 }
 
