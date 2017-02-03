@@ -17,7 +17,8 @@ firebase.initializeApp(config);
 /*********************************
 variable declarations
 *********************************/
-
+let oPlayer = false;
+let xPlayer = false;
 let currentGame;
 let turnsRef
 let currentGamesRef
@@ -35,19 +36,19 @@ functions
 *********************************/
 
 function checkSeats() {
-	if (document.querySelector('.seatOne').innerHTML && document.querySelector('.seatTwo').innerHTML === 'Seat Taken') {
+  if (document.querySelector('.seatOne').innerHTML && document.querySelector('.seatTwo').innerHTML === 'Seat Taken') {
     userRef.update({ twoplayers : true })
-	}
+  }
 }
 
 // DOM SEAT RESET
 function resetSeats() {
-	$('.seatOne').html('Join Seat 1 (X)')
-	$('.seatTwo').html('Join Seat 2 (O)')
-	$('.seatOne').removeClass('btn-primary')
-	$('.seatTwo').removeClass('btn-primary')
-	$('.seatOne').addClass('btn-default')
-	$('.seatTwo').addClass('btn-default')
+  $('.seatOne').html('Join Seat 1 (X)')
+  $('.seatTwo').html('Join Seat 2 (O)')
+  $('.seatOne').removeClass('btn-primary')
+  $('.seatTwo').removeClass('btn-primary')
+  $('.seatOne').addClass('btn-default')
+  $('.seatTwo').addClass('btn-default')
 }
 
 // TURN FUNCTION
@@ -136,10 +137,20 @@ function turnUpdate(turns) {
     // x turn
     $('.currentTurnX').html("X's Turn")
     $('.currentTurnO').html("")
+    if (xPlayer) {
+      enableBoard()
+    } else {
+      disableBoard()
+    }
   } else {
     //o turn
     $('.currentTurnX').html("")
     $('.currentTurnO').html("O's Turn")
+     if (oPlayer) {
+      enableBoard()
+    } else {
+      disableBoard()
+    }
   }
 }
 
@@ -220,21 +231,32 @@ function moveDom(snap) {
   }
 }
 
+// 
+function checkSeatUsers(data, currentUser) {
+  if (data.X === currentUser) {
+        xPlayer = true
+      } else if (data.O === currentUser) {
+        oPlayer = true
+      }
+}
+
 // CHANGE SEATS ON DOM ACCORDING TO PLAYERS AT TABLE ON DATABASE
 function updateSeats(snap) {
   let data = snap.val()
+  const currentUser = firebase.auth().currentUser.uid
   // console.log(snap.val())
   if (data) {
     if (data.X) {
-      console.log('hello')
       $('.seatOne').html('X Seat Taken')
       $('.seatOne').removeClass('btn-default')
       $('.seatOne').addClass('btn-danger')
+      checkSeatUsers(data, currentUser)
     }
     if (data.O) {
       $('.seatTwo').html('O Seat Taken')
       $('.seatTwo').removeClass('btn-default')
       $('.seatTwo').addClass('btn-danger')
+      checkSeatUsers(data, currentUser)
     }
   }
 }
@@ -258,7 +280,8 @@ function newGame() {
   clearSquares()
   $('.currentTurnX').html("X's Turn")
   $('.currentTurnO').html(``)
-  enableBoard()
+  // enableBoard()
+  disableBoard()
 }
 
 function tableClick(e) {
