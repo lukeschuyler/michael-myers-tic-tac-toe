@@ -35,7 +35,7 @@ functions
 *********************************/
 
 function checkSeats() {
-	if (document.querySelector('.seatOne').innerHTML && document.querySelector('.seatTwo').innerHTML === 'Seat Taken') {
+	if (document.querySelector('.seatOne').innerHTML === 'X Seat Taken' && document.querySelector('.seatTwo').innerHTML === 'O Seat Taken') {
 		userRef.update({ twoplayers : true })
 	}
 }
@@ -203,21 +203,6 @@ function updateSeats(snap) {
   }
 }
 
-function updateSeatsONCE(snap) {
-  console.log(snap)
-  // if (data.X) {
-  //   console.log('hello')
-  //   $('.seatOne').html('Seat Taken')
-  //   $('.seatOne').removeClass('btn-default')
-  //   $('.seatOne').addClass('btn-danger')
-  // }
-  // if (data.O) {
-  //   $('.seatTwo').html('Seat Taken')
-  //   $('.seatTwo').removeClass('btn-default')
-  //   $('.seatTwo').addClass('btn-danger')
-  // }
-}
-
 function switchViews() {
   $('.table-view').addClass('hidden')
   $('.game-view').removeClass('hidden')
@@ -261,6 +246,7 @@ function tableClick(e) {
   })
 }
 
+
 function disableBoard() {
   $('.square').off('click')
 }
@@ -274,6 +260,8 @@ function enableBoard(){
 
 
 function refreshPage() {
+  const newUsers = { users : {} }
+  currentGamesRef.update(newUsers)
   location.reload()
 }
 
