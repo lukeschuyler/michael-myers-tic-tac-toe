@@ -146,16 +146,18 @@ function endCheck(turns) {
   if(winCheck(turns)) { //checks to see if someone won
     // setTimeout(function(){ //timeout to let character display before alert pops
     //   // alert(`${winner} WON!`)
-      if (winner === 'X') {
-        $('.currentTurnX').html(`${winner} WINS`)
-        $('.currentTurnO').html(``)
-      } else {
-        $('.currentTurnO').html(`${winner} WINS`)
-        $('.currentTurnX').html(``)
-      }
+    disableBoard()
+    if (winner === 'X') {
+      $('.currentTurnX').html(`${winner} WINS`)
+      $('.currentTurnO').html(``)
+    } else {
+      $('.currentTurnO').html(`${winner} WINS`)
+      $('.currentTurnX').html(``)
+    }
   }
   if(drawCheck(turns)) { //checks for draw
     // setTimeout(function(){ //timeout to let character display before alert pops
+      disableBoard()
      $('.currentTurnX').html(`DRAW`)
      $('.currentTurnO').html(`DRAW`)
 
@@ -234,6 +236,7 @@ function newGame() {
   clearSquares()
   $('.currentTurnX').html("X's Turn")
   $('.currentTurnO').html(``)
+  enableBoard()
 }
 
 function tableClick(e) {
@@ -257,6 +260,17 @@ function tableClick(e) {
     newGame();
   })
 }
+
+function disableBoard() {
+  $('.square').off('click')
+}
+
+function enableBoard(){
+  // user clicks on square
+  $('.square').on('click', makeMove)
+}
+
+
 
 
 function refreshPage() {
