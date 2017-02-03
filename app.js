@@ -35,8 +35,8 @@ functions
 *********************************/
 
 function checkSeats() {
-	if (document.querySelector('.seatOne').innerHTML === 'X Seat Taken' && document.querySelector('.seatTwo').innerHTML === 'O Seat Taken') {
-		userRef.update({ twoplayers : true })
+	if (document.querySelector('.seatOne').innerHTML && document.querySelector('.seatTwo').innerHTML === 'Seat Taken') {
+    userRef.update({ twoplayers : true })
 	}
 }
 
@@ -128,6 +128,7 @@ function getTurnCount(turns) {
   return pastTurns
 }
 
+
 //calls getTurnCount and sets the turn notification on board
 function turnUpdate(turns) {
   turnCounter = getTurnCount(turns)
@@ -162,6 +163,41 @@ function endCheck(turns) {
      $('.currentTurnO').html(`DRAW`)
 
   }
+}
+
+function tableButtonState(playerCount, tables) {
+  if (playerCount === 1) {
+    $(`#${tables}`).removeClass("btn-danger").addClass("btn-warning").addClass("flash-button")
+  } else if (playerCount === 2) {
+    $(`#${tables}`).removeClass("flash-button").prop("disabled", true)
+  }
+}
+
+function updateLobbyButtons(snap) {
+  const data = snap.val()
+  for (tables in data) {
+    $(`#${tables}`).removeClass("flash-button btn-warning").addClass("btn-danger").prop("disabled", false)
+    // console.log('users', data[tables].users)
+    let users = data[tables].users
+    if (users) {
+      let playerCount = 0
+      if (users.X) {
+        playerCount++
+      }
+      if (users.O) {
+        playerCount++
+      }
+      console.log('playerCount', playerCount)
+      tableButtonState(playerCount, tables)
+    }
+    // statement
+  }
+  // const tables = data.tables
+  // const users = data.users
+    // console.log('data', data)
+  // users.forEach(callbackfn: Function, thisArg?: any)
+  // if (users) {
+  // }
 }
 
 //function that runs after a move is made. gets database snapshot and checks for a winner
@@ -213,6 +249,7 @@ function tableSetUp() {
   switchViews()
 }
 
+
 // WORKING NEW GAME FUNCTION WITH TABLES
 function newGame() {
   currentGamesRef.on('value', onUpdate)
@@ -238,12 +275,7 @@ function tableClick(e) {
     gamesRef.update([currentGame])
   }
   tableSetUp()
-  userRef.once('value', updateSeatsONCE)
-  .then(function(snap) {
-    console.log(snap.val())
-    // if (snap)
-    newGame();
-  })
+  newGame();
 }
 
 
@@ -268,12 +300,13 @@ function refreshPage() {
 /*********************************
 event listeners
 *********************************/
+gamesRef.on('value', updateLobbyButtons)
 
-// refresh page 
+// refresh page
 $('.back-lobby').click(refreshPage)
 
-// user clicks on square
-$('.square').click(makeMove)
+// // user clicks on square
+// $('.square').click(makeMove)
 
 // user clicks new game button
 $('.new-game').click(newGame)
