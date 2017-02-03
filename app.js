@@ -226,9 +226,16 @@ function updateSeatsONCE(snap) {
   // }
 }
 
+function refreshPage() {
+  location.reload()
+}
+
 /*********************************
 event listeners
 *********************************/
+
+// refresh page 
+$('.back-lobby').click(refreshPage)
 
 // user clicks on square
 $('.square').click(makeMove)
