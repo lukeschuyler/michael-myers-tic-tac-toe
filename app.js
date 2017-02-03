@@ -91,40 +91,27 @@ $('.seat').click(function(e) {
   }
 })
 
-// WORKING NEW GAME FUNCTION WITH TABLES
-function newGame() {
-  // console.log(currentGame)
-  // $('.currentTurn').html("X's Turn")
-  // let removeGame = { [currentGame] : null }
-  // gamesRef.update(removeGame)
-  const newBoard = { [currentGame] : { turns : ["", "", "", "", "", "", "", "", ""] } }
+function clearSquares() {
+  const newTurns = { turns : ["", "", "", "", "", "", "", "", ""] }
+  currentGamesRef.update(newTurns)
   document.querySelectorAll('.square').forEach(function(square) {
     square.innerText = null
   })
-  gamesRef.update(newBoard)
-    .then(() => {
-      turnsRef = firebase.database().ref('games/' + currentGame + '/turns')
-      userRef = firebase.database().ref('games/' + currentGame + '/users')
-      currentGamesRef = firebase.database().ref('games/' + currentGame)
-      currentGamesRef.on('value', onUpdate)
-      turnsRef.on('value', moveDom)
-      userRef.on('value', updateSeats)
-  })
-  i = 0;
 }
+
 
 //checks to see if game is a draw
 function drawCheck(turns) {
   let drawGame = true
+  //checks to make sure a winner hasn't already been declared
+  if (winner !== "") {
+    drawGame = false
+  }
   //loops to see if there are any squares not filled in
   for(var i = 0, length1 = turns.length; i < length1; i++){
     if (turns[i] === "") {
       drawGame = false
     }
-  }
-  //checks to make sure a winner hasn't already been declared
-  if (winner !== "") {
-    drawGame = false
   }
   return drawGame
 }
@@ -155,14 +142,10 @@ function turnUpdate(turns) {
   }
 }
 
-//function that runs after a move is made. gets database snapshot and checks for a winner
-function onUpdate(snap) {
-  const data = snap.val()
-  const turns = data.turns
-  turnUpdate(turns) //update turn notification
+function endCheck(turns) {
   if(winCheck(turns)) { //checks to see if someone won
-    setTimeout(function(){ //timeout to let character display before alert pops
-      // alert(`${winner} WON!`)
+    // setTimeout(function(){ //timeout to let character display before alert pops
+    //   // alert(`${winner} WON!`)
       if (winner === 'X') {
         $('.currentTurnX').html(`${winner} WINS`)
         $('.currentTurnO').html(``)
@@ -170,14 +153,21 @@ function onUpdate(snap) {
         $('.currentTurnO').html(`${winner} WINS`)
         $('.currentTurnX').html(``)
       }
-    }, 300)
   }
   if(drawCheck(turns)) { //checks for draw
-    setTimeout(function(){ //timeout to let character display before alert pops
+    // setTimeout(function(){ //timeout to let character display before alert pops
      $('.currentTurnX').html(`DRAW`)
      $('.currentTurnO').html(`DRAW`)
-    }, 300)
+
   }
+}
+
+//function that runs after a move is made. gets database snapshot and checks for a winner
+function onUpdate(snap) {
+  const data = snap.val()
+  const turns = data.turns
+  turnUpdate(turns) //update turn notification
+  endCheck(turns)
 }
 
 // CHANGES X's AND O'S ACCORDING TO WHATS ON DATABASE
@@ -226,6 +216,53 @@ function updateSeatsONCE(snap) {
   // }
 }
 
+function switchViews() {
+  $('.table-view').addClass('hidden')
+  $('.game-view').removeClass('hidden')
+}
+
+function tableSetUp() {
+  $('#currentTable').text(currentGame.slice(0,5) + ' ' +  currentGame.slice(5))
+  switchViews()
+}
+
+// WORKING NEW GAME FUNCTION WITH TABLES
+function newGame() {
+  // console.log(currentGame)
+  // $('.currentTurn').html("X's Turn")
+  // let removeGame = { [currentGame] : null }
+  // gamesRef.update(removeGame)
+  currentGamesRef.on('value', onUpdate)
+  turnsRef.on('value', moveDom)
+  userRef.on('value', updateSeats)
+  clearSquares()
+  $('.currentTurnX').html("X's Turn")
+  $('.currentTurnO').html(``)
+}
+
+function tableClick(e) {
+  currentGame = $(this).attr('id');
+  turnsRef = firebase.database().ref('games/' + currentGame + '/turns')
+  userRef = firebase.database().ref('games/' + currentGame + '/users')
+  currentGamesRef = firebase.database().ref('games/' + currentGame)
+  // gamesRef.once('value')
+  // .then(
+
+  //   )
+  if(!currentGamesRef.once('value')) {
+    console.log('!currentGamesRef')
+    gamesRef.update([currentGame])
+  }
+  tableSetUp()
+  userRef.once('value', updateSeatsONCE)
+  .then(function(snap) {
+    console.log(snap.val())
+    // if (snap)
+    newGame();
+  })
+}
+
+
 /*********************************
 event listeners
 *********************************/
@@ -237,18 +274,7 @@ $('.square').click(makeMove)
 $('.new-game').click(newGame)
 
 // TABLE CLICK EVENT
- $('.table').click(function() {
-    currentGame = $(this).attr('id');
-    $('.table-view').addClass('hidden')
-    $('.game-view').removeClass('hidden')
-    $('#currentTable').text(currentGame.slice(0,5) + ' ' +  currentGame.slice(5))
-    userRef.once('value', updateSeatsONCE)
-    .then(function(snap) {
-      console.log(snap.val())
-      // if (snap)
-      newGame();
-    })
-  })
+ $('.table').click(tableClick)
 
 
 
