@@ -135,18 +135,22 @@ function turnUpdate(turns) {
   turnCounter = getTurnCount(turns)
   if ((turnCounter % 2) === 0 || turnCounter === 0) {
     // x turn
+    $('.currentTurnO').removeClass('flash-button')
     $('.currentTurnX').html("X's Turn")
     $('.currentTurnO').html("")
     if (xPlayer) {
+      $('.currentTurnX').addClass('flash-button')
       enableBoard()
     } else {
       disableBoard()
     }
   } else {
     //o turn
+    $('.currentTurnX').removeClass('flash-button')
     $('.currentTurnX').html("")
     $('.currentTurnO').html("O's Turn")
      if (oPlayer) {
+      $('.currentTurnO').addClass('flash-button')
       enableBoard()
     } else {
       disableBoard()
@@ -312,11 +316,9 @@ function enableBoard(){
 }
 
 
-
-
 function refreshPage() {
   const newUsers = { users : {} }
-  currentGamesRef.update(newUsers)
+  currentGamesRef.update(newUsers)  
   location.reload()
 }
 
